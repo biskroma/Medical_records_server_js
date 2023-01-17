@@ -20,6 +20,7 @@ const MedicalRecordSchema = db.define('medical_record', {
       defaultValue: sequelize.UUIDV4,
       primaryKey: true
     },
+    recordNumber: sequelize.NUMBER,
     name: sequelize.STRING,
     bloodType: sequelize.ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
     allergies: {

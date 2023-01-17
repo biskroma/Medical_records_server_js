@@ -8,5 +8,7 @@ const api = express.Router();
 
 api.post('/register', MedicalRecordsController.registerNewMedicalRecord);
 api.get('/record/:id', MedicalRecordsController.getMedicalRecordById);
+api.get('/name/:name', MedicalRecordsController.getMedicalRecordByPatientName);
+api.get('/recordNumber/:recordNumber', MedicalRecordsController.getMedicalRecordByRecordNumber);
 
 module.exports = api;

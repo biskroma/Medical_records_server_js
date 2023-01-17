@@ -11,6 +11,11 @@ const show404 = function(res, mess){
   });
 }
 
+const generateMedicalRecordNumber = function()
+{
+  return Math.floor(Math.random()*90000) + 10000;
+}
+
 const registerNewMedicalRecord = function(req, res)
 {
   // Get data from body
@@ -22,6 +27,7 @@ const registerNewMedicalRecord = function(req, res)
 
   // Create new medical record in the database
   MedicalRecord.create({
+    recordNumber: generateMedicalRecordNumber(),
     name,
     bloodType,
     allergies,
@@ -33,10 +39,7 @@ const registerNewMedicalRecord = function(req, res)
       message: `Medical record ${record.id} has been registered`
     });
   }).catch(err => {
-    res.status(500).json({
-      code: 500,
-      message: `Internal error: ${err}`
-    });
+    console.log({err});
   });
 }
 
@@ -56,14 +59,53 @@ const getMedicalRecordById = function(req, res)
       allergies: record.allergies
     });
   }).catch(err => {
-    res.status(500).json({
-      code: 500,
-      message: `Internal error: ${err}`
+    console.log({err});
+  });
+}
+
+const getMedicalRecordByPatientName = function(req, res)
+{
+  // Find the medical record in the database by name
+  MedicalRecord.findOne({where: {name: req.params.name}}).then(name => {
+    if (!name) {
+      throw show404(res, 'The record was not found.');
+    }
+    res.json({
+      id: name.id,
+      createdAt: name.createdAt,
+      lastAppointment: name.lastAppointment,
+      name: name.name,
+      bloodType: name.bloodType,
+      allergies: name.allergies
     });
+  }).catch(err => {
+    console.log({err});
+  });
+}
+
+const getMedicalRecordByRecordNumber = function(req, res)
+{
+  // Find the medical record in the database by record number
+  MedicalRecord.findOne({where: {recordNumber: req.params.recordNumber}}).then(recordNumber => {
+    if (!recordNumber) {
+      throw show404(res, 'The record was not found.');
+    }
+    res.json({
+      id: recordNumber.id,
+      createdAt: recordNumber.createdAt,
+      lastAppointment: recordNumber.lastAppointment,
+      name: recordNumber.name,
+      bloodType: recordNumber.bloodType,
+      allergies: recordNumber.allergies
+    });
+  }).catch(err => {
+    console.log({err});
   });
 }
 
 module.exports = {
   registerNewMedicalRecord,
-  getMedicalRecordById
+  getMedicalRecordById,
+  getMedicalRecordByPatientName,
+  getMedicalRecordByRecordNumber
 }
