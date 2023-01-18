@@ -92,6 +92,7 @@ const getMedicalRecordByRecordNumber = function(req, res)
     }
     res.json({
       id: recordNumber.id,
+      recordNumber: recordNumber.recordNumber,
       createdAt: recordNumber.createdAt,
       lastAppointment: recordNumber.lastAppointment,
       name: recordNumber.name,

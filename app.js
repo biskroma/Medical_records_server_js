@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.use((req, res, next)=>{
 
     next();
 });
+
+app.use(cors());
 
 // Base routes with the word 'api' before the routes
 app.use('/api', medical_records_routes);
